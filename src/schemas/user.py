@@ -11,3 +11,4 @@ class UserRegister(BaseModel):
 	email: EmailStr
 	password: str 
 	full_name: Optional[str] = None
+

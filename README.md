@@ -3,8 +3,19 @@
 SaaS for hotels to manage their reservations
 
 
-## TODO
+### Tech stack
 
-- [] user register + login (JWT auth)
-- [] hotel model and APIs
-- []  
+- FastAPI for routing
+- postgresql for database
+- sqlalchemy for orm
+- fly.io for deployment
+
+### TODO
+
+- [ ] user register + login (JWT auth)
+- [ ] hotel model, schemas, and APIs
+- [ ] booking model, schemas, and apis
+
+### LICENSE
+
+This project is under [MIT](LICENSE) license

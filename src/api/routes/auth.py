@@ -25,9 +25,9 @@ router = APIRouter()
 
 @router.post("/register", response_model=dict, status_code=status.HTTP_201_CREATED)
 def register_user(user: UserRegister, db: Session =  Depends(get_db)) -> Dict[str, any]:
-	user = user_crud.get_user_by_email(email=user.email, db=db)
-	if user:
+	user_in_db = user_crud.get_user_by_email(email=user.email, db=db)
+	if user_in_db:
 		raise HTTPException(status_code=status.HTTP_409_CONFLICT,
 							detail="The user with this {user.email} already exists",)
-	user_crud.create(user)
+	user_crud.create(user=user, db=db)
 	return {"message": "User created"}

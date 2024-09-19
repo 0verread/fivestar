@@ -4,6 +4,7 @@ from fastapi import Depends, HTTPException, status
 from database.database import get_db
 from models.users import User
 from utils.auth import get_password_hash
+from utils.uids import UniqueIds
 from schemas.user import UserRegister
 
 def login(email, password):
@@ -18,7 +19,9 @@ def create(user: UserRegister, db: Session):
 	if db_user:
 		raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User with this email already registered")
 	hashed_password = get_password_hash(user.password)
-	new_user = User(email=user.email, hashed_password=hashed_password)
+	new_user_id = UniqueIds("usr-").get_id()
+	print(new_user_id)
+	new_user = User(id=new_user_id, email=user.email, hashed_password=hashed_password)
 	db.add(new_user)
 	db.commit()
 	db.refresh(new_user)

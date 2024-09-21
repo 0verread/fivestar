@@ -7,7 +7,8 @@ from utils.auth import get_password_hash
 from utils.uids import UniqueIds
 from schemas.user import UserRegister
 
-def login(email, password):
+def login(email, password, db: Session):
+	
 	pass
 
 def get_user_by_email(email, db: Session):
@@ -20,7 +21,6 @@ def create(user: UserRegister, db: Session):
 		raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User with this email already registered")
 	hashed_password = get_password_hash(user.password)
 	new_user_id = UniqueIds("usr-").get_id()
-	print(new_user_id)
 	new_user = User(id=new_user_id, email=user.email, hashed_password=hashed_password)
 	db.add(new_user)
 	db.commit()

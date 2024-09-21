@@ -29,5 +29,5 @@ def register_user(user: UserRegister, db: Session =  Depends(get_db)) -> Dict[st
 	if user_in_db:
 		raise HTTPException(status_code=status.HTTP_409_CONFLICT,
 							detail="The user with this {user.email} already exists",)
-	user_crud.create(user=user, db=db)
-	return {"message": "User created"}
+	new_user = user_crud.create(user=user, db=db)
+	return {"message": "User created", "user": new_user}

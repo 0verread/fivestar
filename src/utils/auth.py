@@ -1,15 +1,16 @@
 import jwt
+import bcrypt
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
 from utils.secrets import Secrets
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verfify_password(plain_password: str, hashed_password: str):
-	return pwd_context.verify(plain_password, hashed_password)
+	return bcrypt.checkpw(plain_password, hashed_password)
 
 def get_password_hash(plain_password: str):
-	return pwd_context.hash(plain_password)
+	return bcrypt.hashpw(plain_password.encode('utf-8'), bcrypt.gensalt()).decode('utf8')
 
 def create_access_token(data: dict):
 	to_encode = data.copy()

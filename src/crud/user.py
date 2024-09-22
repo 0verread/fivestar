@@ -3,16 +3,27 @@ from fastapi import Depends, HTTPException, status
 
 from database.database import get_db
 from models.users import User
-from utils.auth import get_password_hash
+from utils.auth import get_password_hash, verfify_password, create_access_token
 from utils.uids import UniqueIds
 from schemas.user import UserRegister
 
-def login(email, password, db: Session):
+def login(email, password, db: Session) -> str:
+	invalid_cred_err_msg = "Invalid Email or password"
+	try:
+		db_user = get_user_by_email(email=email, db=db) 
+		# hashed_password = get_password_hash(password)
+		is_validated = db_user.verify_password(password)
+		if is_validated is not True:
+			raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=invalid_cred_err_msg)
+	except:
+		raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=invalid_cred_err_msg)
+	access_token = create_access_token(data={"sub": email})
+	return access_token
 	
-	pass
 
 def get_user_by_email(email, db: Session):
 	user = db.query(User).filter(User.email == email).first()
+	print(user)
 	return user
 
 def create(user: UserRegister, db: Session):

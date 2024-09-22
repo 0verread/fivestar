@@ -1,3 +1,4 @@
+import bcrypt
 from sqlalchemy import Boolean, Column, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -23,3 +24,7 @@ class User(Base):
 
 	def __repr__(self):
 		return f"<User(full_name={self.full_name}, email={self.email})>"
+	
+	def verify_password(self, password):
+		return bcrypt.checkpw(password.encode('utf-8'), self.hashed_password.encode('utf-8'))	
+		 

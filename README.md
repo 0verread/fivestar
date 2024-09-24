@@ -12,7 +12,7 @@ SaaS for hotels to manage their reservations
 
 ### TODO
 
-- [ ] user register + login (JWT auth)
+- [X] user register + login (JWT auth) (**Not so good**)
 - [ ] hotel model, schemas, and APIs
 - [ ] booking model, schemas, and apis
 

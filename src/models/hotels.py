@@ -15,3 +15,7 @@ class Hotel(Base):
 	last_updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 	owner_id = Column(String, ForeignKey("users.id"))
+
+	def __repr__(self):
+		return f""
+	

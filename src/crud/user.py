@@ -3,15 +3,14 @@ from fastapi import Depends, HTTPException, status
 
 from database.database import get_db
 from models.users import User
-from utils.auth import get_password_hash, verfify_password, create_access_token
+from utils.auth import get_password_hash, create_access_token
 from utils.uids import UniqueIds
 from schemas.user import UserRegister
 
-def login(email, password, db: Session) -> str:
+def login(email: str, password: str, db: Session) -> str:
 	invalid_cred_err_msg = "Invalid Email or password"
 	try:
 		db_user = get_user_by_email(email=email, db=db) 
-		# hashed_password = get_password_hash(password)
 		is_validated = db_user.verify_password(password)
 		if is_validated is not True:
 			raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=invalid_cred_err_msg)
@@ -21,7 +20,8 @@ def login(email, password, db: Session) -> str:
 	return access_token
 	
 
-def get_user_by_email(email, db: Session):
+def get_user_by_email(email: str, db: Session):
+	# TODO: should be cached
 	user = db.query(User).filter(User.email == email).first()
 	print(user)
 	return user
@@ -31,7 +31,7 @@ def create(user: UserRegister, db: Session):
 	if db_user:
 		raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User with this email already registered")
 	hashed_password = get_password_hash(user.password)
-	new_user_id = UniqueIds("usr-").get_id()
+	new_user_id = UniqueIds("usr_").get_id()
 	new_user = User(id=new_user_id, email=user.email, hashed_password=hashed_password)
 	db.add(new_user)
 	db.commit()

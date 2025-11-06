@@ -5,8 +5,6 @@ SaaS for hotels to manage their reservations
 
 
 ### Tech stack
-
-- FastAPI for routing
 - postgresql for database
 - sqlalchemy for orm
 

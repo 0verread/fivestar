@@ -6,10 +6,6 @@ from utils.uids import UniqueIds
 from schemas.hotel import CreateHotelSchema
 from bcrypt 
 
-
-def create_new_hotel(hotel: CreateHotelSchema, db: Session):
-	pass
-
 def update_hotel_details(hotel: UpdateHotelSchema, db: Session):
 	pass 
 
